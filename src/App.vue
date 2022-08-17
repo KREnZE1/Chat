@@ -6,7 +6,7 @@
 import Chat from "./components/Chat.vue";
 
 export default {
-	name: 'App',
+	name: "App",
 	components: {
 		Chat
 	},

@@ -1,37 +1,25 @@
 <template>
     <div v-if="!joined" class="parent-container">
         <div class="name-container">
-            <input type="text" placeholder="Username" v-model="username" class="user-name">
-            <button v-on:click="join" type="button" class="join-button">Join</button>
+            <input id="name-input" type="text" placeholder="Username" v-model="username" class="user-name">
+            <button :disabled="!username.trim().length" v-on:click="join" type="button" class="join-button">Join</button>
         </div>
     </div>
+    <!-- IP Ronit: 192.168.180.146
+         IP Ich:   192.168.180.192 -->
     <div v-else>
         <div class="list-container">
-            <div v-for="message in messages" :key="message.id">
+            <div v-for="message in messages">
                 <b>
                     {{ message.user }}
-                </b>
-                : {{ message.text }}
-            </div>
-        </div>
-        <div class="text-input-container">
-            <textarea v-model="text" class="text-message" v-on:keyup.enter="sendMessage"></textarea>
-        </div>
-    </div>
-    <!-- <div v-else>
-        <div class="list-container">
-            <div v-for="message in messages">
-            <b>
-                {{ message.user }}
-            </b>
-            : {{ message.text }}
+                </b>: {{ message.text }}
             </div>
         </div>
         <div class="text-input-container">
             <input type="text" placeholder="Send a message" v-model="text" v-on:keyup.enter="sendMessage"
                 class="text-message">
         </div>
-    </div> -->
+    </div>
 </template>
 
 
@@ -43,15 +31,20 @@ export default {
     methods: {
         join: function () {
             this.joined = true;
-            this.socketInstance = io("http://localhost:3000", {
+            this.socketInstance = io("http://192.168.180.192:3000", {
                 transports: ["websocket", "polling"],
             }),
 
-                this.socketInstance.on(
-                    "message:received", (data) => {
-                        this.messages = this.messages.concat(data);
-                    }
-                );
+            console.log("Temp");
+
+            // console.log(
+            this.socketInstance.on(
+                "message:received", (data) => {
+                    console.log("Schritt 2");
+                    this.messages = this.messages.concat(data);
+                    console.log("Schritt 3");
+                }
+            );
         },
         sendMessage: function () {
             this.addMessage();
@@ -63,10 +56,9 @@ export default {
                 text: this.text,
                 user: this.username
             }
-            this.messages = this.messages.concat(message);
-            console.log("Message concated"); //Wird gesendet
-            this.socketInstance.emit('message', message);
-            console.log("Message rausgeschickt"); //Wird gesendet
+            console.log(message.text);
+            // this.messages = this.messages.concat(message);
+            this.socketInstance.emit("message", message);
         }
     },
     data() {
