@@ -1,0 +1,9 @@
+{
+	"tabWidth": 4,
+	"useTabs": true,
+	"trailingComma": "all",
+	"bracketSpacing": false,
+	"vueIndentScriptAndStyle": true,
+	"embeddedLanguageFormatting": "off",
+	"endOfLine": "crlf"
+}
