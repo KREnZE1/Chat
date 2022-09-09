@@ -28,13 +28,14 @@
 					v-bind:key="index"
 					name="index"
 				>
-					<b> {{ message.user }} </b>: {{ message.text }}
+					<b> {{ message.user }}: </b>{{ message.text }}
 				</div>
 			</div>
 			<div class="users">
-				<div v-for="(user, index) in users" v-bind:key="index">
-					{{ user }} <br />
-				</div>
+				<p>Active Users:</p>
+				<ul>
+					<li v-for="user in users" :key="user">{{user}}</li>
+				</ul>
 			</div>
 		</div>
 		<div class="text-input-container">
@@ -53,25 +54,22 @@
 <script>
 	import io from "socket.io-client";
 
+	//TODO: Auf die richtige IP-Adresse achten!!!
+	const address = "http://192.168.178.135:3000"; //Schule
+	// const address = "http://192.168.7.209:3000" //Zu Hause
+
 	export default {
 		name: "Chat",
 		methods: {
 			tryJoin: function () {
-				if (document.getElementById("name-input").value.trim().length > 0) {
-					this.join();
-				}
+				if (document.getElementById("name-input").value.trim().length > 0) this.join();
 			},
 			join: function () {
 				this.joined = true;
 
-				// this.socketInstance = io("http://192.168.178.135:3000", {
-				// 	transports: ["websocket", "polling"],
-				// });  //Zu Hause
-				this.socketInstance = io("http://192.168.7.209:3000", {
+				this.socketInstance = io(address, {
 					transports: ["websocket", "polling"],
-				});  //Schule
-
-
+				});
 
 				this.$nextTick(() => {
 					document.getElementById("messageSender").focus();
@@ -168,15 +166,13 @@
 
 
 	.messages {
-		width: 95%;
+		width: 90%;
 	}
 
 	.users{
-		width: 5%;
-		display: flex;
-		justify-content: right;
-		position: fixed;
-		margin-left: 95%;
+		width: 10%;
+		justify-content: left;
+		font-size: 20px;
 	}
 
 	.text-input-container {
@@ -193,4 +189,14 @@
 		box-sizing: border-box;
 	}
 
+	ul {
+		list-style-type: none;
+	}
+
+	ul li:before {
+		content: "\2022";
+		color: #3BA55D;
+		margin-left: -1em;
+		font-size: 25px;
+	}
 </style>
