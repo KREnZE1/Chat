@@ -54,9 +54,8 @@
 <script>
 	import io from "socket.io-client";
 
-	//TODO: Auf die richtige IP-Adresse achten!!!
-	const address = "http://192.168.178.135:3000"; //Schule
-	// const address = "http://192.168.7.209:3000" //Zu Hause
+	//TODO: Eigene IP-Addresse einfügen!!!
+	const address = "";
 
 	export default {
 		name: "Chat",
